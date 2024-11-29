@@ -57,7 +57,7 @@ def download_content_gc(video_url):
                 with open(results_directory, 'wb') as f:
                     f.write(r.content)
             Last_created_file=str(video_url.split('/')[-2]+'_'+str(i)+extension)
-            if Last_created_file in [f for f in os.listdir('results') if os.path.isfile(os.path.join('results', f))]:
+            if Last_created_file in [f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]:
                 break
         except:
             time.sleep(0.5)
@@ -77,8 +77,8 @@ def download_content_gc(video_url):
     caption = BeautifulSoup(requests.get(video_url).text, 'html.parser').find_all('meta', property="og:description")[0]['content']
 
     driver.quit()
-    files = [f for f in os.listdir('results') if os.path.isfile(os.path.join('results', f))]
-    
+    files = [f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]
+
     return files, caption, additional_info_list
 
 
