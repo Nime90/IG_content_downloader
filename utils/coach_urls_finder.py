@@ -40,7 +40,7 @@ def coach_urls_finder_gc(coach_profile_url):
     driver = gs.Chrome(options=chrome_options)
     driver.get(coach_profile_url)
     driver.implicitly_wait(10)
-    time.sleep(3)
+    time.sleep(5)
 
     elem = driver.find_elements(By.CSS_SELECTOR, 'a')
     for e in elem:
