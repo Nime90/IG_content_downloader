@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.download_content import download_content_gc
+from utils.download_content import download_content_gc as download_content
 import zipfile
 import os,shutil
 
