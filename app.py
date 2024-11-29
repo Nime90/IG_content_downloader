@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.download_content import download_content
+from utils.coach_urls_finder import coach_urls_finder
 import zipfile
 import os,shutil
 
@@ -12,7 +13,7 @@ Enter the URLs and download all content as a single ZIP file.
 """)
 
 # User input for the video URL
-urls = st.text_area("Enter Instagram URLs (one per line):")
+url_p = st.text_input("Enter Coach Instagram profile URL:")
 
 # Button to download the content
 if st.button("Download"):
@@ -21,7 +22,7 @@ if st.button("Download"):
         if os.path.exists('results'): shutil.rmtree('results')
         
         # Call the download_content function
-        url_list = [url.strip() for url in urls.splitlines() if url.strip()]
+        url_list = coach_urls_finder(url_p)
         captions = []
         additional_info_lists = []
         for url in url_list:

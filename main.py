@@ -1,11 +1,13 @@
 from utils.download_content import download_content
+from utils.coach_urls_finder import coach_urls_finder
 import os, shutil
 
 #clean results
 if os.path.exists('results'): shutil.rmtree('results')
 #specify the video url
-url_list=['https://www.instagram.com/p/DC11wzFsGul/?hl=en','https://www.instagram.com/p/DCzssAQoUY5/?img_index=1']
-
+url_list=coach_urls_finder('https://www.instagram.com/emmafituk_/?hl=en')
+print('urls captured')
+print(url_list)
 #download in results folder
 captions = []
 additional_info_lists = []
