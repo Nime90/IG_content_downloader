@@ -64,22 +64,22 @@ def download_content_gc(video_url):
             pass
 
     #capturing additional_info
-    while True:
-        try:
-            additional_info=driver.find_elements(By.CLASS_NAME, "output-list__info")
-            additional_info_list = additional_info[0].text.split('\n')
-            if len(additional_info_list)>0:
-                break
-        except:
-            time.sleep(0.5)
-            pass
+    #while True:
+    #    try:
+    #        additional_info=driver.find_elements(By.CLASS_NAME, "output-list__info")
+    #        additional_info_list = additional_info[0].text.split('\n')
+    #        if len(additional_info_list)>0:
+    #            break
+    #    except:
+    #        time.sleep(0.5)
+    #        pass
     #get caption
-    caption = BeautifulSoup(requests.get(video_url).text, 'html.parser').find_all('meta', property="og:description")[0]['content']
+    #caption = BeautifulSoup(requests.get(video_url).text, 'html.parser').find_all('meta', property="og:description")[0]['content']
 
     driver.quit()
     files = [f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]
 
-    return files, caption, additional_info_list
+    return files#, caption, additional_info_list
 
 
 def download_content(video_url):
@@ -143,18 +143,18 @@ def download_content(video_url):
             pass
 
     #capturing additional_info
-    while True:
-        try:
-            additional_info=driver.find_elements(By.CLASS_NAME, "output-list__info")
-            additional_info_list = additional_info[0].text.split('\n')
-            if len(additional_info_list)>0:
-                break
-        except:
-            time.sleep(0.5)
-            pass
+    #while True:
+    #    try:
+    #        additional_info=driver.find_elements(By.CLASS_NAME, "output-list__info")
+    #        additional_info_list = additional_info[0].text.split('\n')
+    #        if len(additional_info_list)>0:
+    #            break
+    #    except:
+    #        time.sleep(0.5)
+    #        pass
     #get caption
-    caption = BeautifulSoup(requests.get(video_url).text, 'html.parser').find_all('meta', property="og:description")[0]['content']
+    #caption = BeautifulSoup(requests.get(video_url).text, 'html.parser').find_all('meta', property="og:description")[0]['content']
 
     driver.quit()
     files = [f for f in os.listdir('results') if os.path.isfile(os.path.join('results', f))]
-    return files, caption, additional_info_list
+    return files#, caption, additional_info_list

@@ -1,6 +1,6 @@
 import streamlit as st
 from utils.download_content import download_content
-from utils.coach_urls_finder import coach_urls_finder
+from utils.coach_ig_info import coach_ig_info
 import zipfile
 import os,shutil
 
@@ -13,22 +13,31 @@ Enter the URLs and download all content as a single ZIP file.
 """)
 
 # User input for the video URL
-url_p = st.text_area("Enter the Instagram contents you want to analyze. Please insert one per line:")
+url_p = st.text_input("Enter the Instagram profile link yo uwant to analyze:")
 
 # Button to download the content
 if st.button("Download"):
     try:
         #clean the old results if any
         if os.path.exists('results'): shutil.rmtree('results')
-        
         # Call the download_content function
-        url_list = [line.strip() for line in url_p.splitlines() if line.strip()]#coach_urls_finder(url_p)#coach_urls_finder(url_p)
+        posts_info = coach_ig_info(url_p.split('/')[-2])
+        #url_list = [line.strip() for line in url_p.splitlines() if line.strip()]#coach_urls_finder(url_p)#coach_urls_finder(url_p)
+        url_list=[l for l in posts_info.perma_link]
+        url_list = url_list[:3]
+        
         captions = []
         additional_info_lists = []
-        for url in url_list:
-            file_names, caption, additional_info_list = download_content(url)
-            captions.append(caption)
-            additional_info_lists.append(additional_info_list)
+        for i,url in enumerate(url_list):
+            file_names = download_content(url)
+            captions.append(posts_info.text[i])
+            additional_info_lists.append(
+            'video_views: '+str(posts_info.lifetime_video_views[i])+
+            ' - reactions: '+str(posts_info.lifetime_reactions[i])+
+            ' - likes: '+str(posts_info.lifetime_likes[i])+
+            ' - shares: '+str(posts_info.lifetime_shares_count[i])+
+            ' - comments_count: '+str(posts_info.lifetime_comments_count[i])
+            )
         
         for i,url in enumerate(url_list):
             st.write('Caption for',str(url.split('/'))[-2],': ',captions[i])

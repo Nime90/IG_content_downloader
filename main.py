@@ -1,19 +1,31 @@
 from utils.download_content import download_content
-from utils.coach_urls_finder import coach_urls_finder
+from utils.coach_ig_info import coach_ig_info
 import os, shutil
 
 #clean results
 if os.path.exists('results'): shutil.rmtree('results')
 #specify the video url
-url_list=['https://www.instagram.com/p/DChnh9yxQ0q/?hl=en&img_index=1','https://www.instagram.com/p/DDAVJ0DoyVc/?hl=en']#coach_urls_finder('https://www.instagram.com/emmafituk_/?hl=en')
+coach_url = 'https://www.instagram.com/monetzamora_/?hl=en'
+posts_info = coach_ig_info(coach_url.split('/')[-2])
 
+url_list=[l for l in posts_info.perma_link]
+url_list = url_list[:3]
+print('urls captured')
+print(url_list)
 #download in results folder
 captions = []
 additional_info_lists = []
-for url in url_list:
-    file_names, caption, additional_info_list = download_content(url)
-    captions.append(caption)
-    additional_info_lists.append(additional_info_list)
+for i,url in enumerate(url_list):
+    file_names = download_content(url)
+    captions.append(posts_info.text[i])
+    additional_info_lists.append(
+      'video_views: '+str(posts_info.lifetime_video_views[i])+
+      ' - reactions: '+str(posts_info.lifetime_reactions[i])+
+      ' - likes: '+str(posts_info.lifetime_likes[i])+
+      ' - shares: '+str(posts_info.lifetime_shares_count[i])+
+      ' - comments_count: '+str(posts_info.lifetime_comments_count[i])
+    )
+
 
 #Show Results
 for i,url in enumerate(url_list):
