@@ -13,7 +13,7 @@ Enter the URLs and download all content as a single ZIP file.
 """)
 
 # User input for the video URL
-url_p = st.text_input("Enter Coach Instagram profile URL:")
+url_p = st.text_area("Enter the Instagram contents you want to analyze. Please insert one per line:")
 
 # Button to download the content
 if st.button("Download"):
@@ -22,7 +22,7 @@ if st.button("Download"):
         if os.path.exists('results'): shutil.rmtree('results')
         
         # Call the download_content function
-        url_list = coach_urls_finder(url_p)
+        url_list = [line.strip() for line in url_p.splitlines() if line.strip()]#coach_urls_finder(url_p)
         captions = []
         additional_info_lists = []
         for url in url_list:
