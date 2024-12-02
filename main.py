@@ -5,9 +5,8 @@ import os, shutil
 #clean results
 if os.path.exists('results'): shutil.rmtree('results')
 #specify the video url
-url_list=coach_urls_finder('https://www.instagram.com/emmafituk_/?hl=en')
-print('urls captured')
-print(url_list)
+url_list=['https://www.instagram.com/p/DChnh9yxQ0q/?hl=en&img_index=1','https://www.instagram.com/p/DDAVJ0DoyVc/?hl=en']#coach_urls_finder('https://www.instagram.com/emmafituk_/?hl=en')
+
 #download in results folder
 captions = []
 additional_info_lists = []
