@@ -1,8 +1,10 @@
 def img_interpreter(base64_image):
     from openai import OpenAI
+    from dotenv import load_dotenv
+    load_dotenv('.env')
     import os
 
-    api_key = os.getenv('OPENAI_API_KEY')
+    api_key = os.getenv("OPENAI_API_KEY")
     client = OpenAI(api_key=api_key)
 
     prompt='''Please summarize what is in this image. Please be extremely detailed and imagine to explain the entire content of each frame to a blind person. 
