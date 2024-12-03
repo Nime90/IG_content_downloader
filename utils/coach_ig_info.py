@@ -28,7 +28,7 @@ def coach_ig_info_gc(handle_name = "monetzamora_"):
       perma_link,
       text
       FROM `bi-lenus-prod.sprout_social.posts` 
-      where perma_link like '%instagram%'  
+      where perma_link like '%instagram%' and (perma_link like '%/reel/%' or perma_link like '%/p/%')  
       and customer_profile_id = cast(
           (select distinct ssd.customer_profile_id  
           FROM `bi-lenus-prod.dbt_datamart.sprout_social_daily` ssd 
@@ -49,7 +49,7 @@ def coach_ig_info_gc(handle_name = "monetzamora_"):
   from IG_info 
   left join coach_handle
   on cast(IG_info.customer_profile_id as string) = cast(coach_handle.customer_profile_id as string)
-  order by _date asc
+  order by _date desc
   """
 
   # Execute the query and convert the results to a pandas DataFrame
@@ -82,7 +82,7 @@ def coach_ig_info(handle_name = "monetzamora_"):
         perma_link,
         text
         FROM `bi-lenus-prod.sprout_social.posts` 
-        where perma_link like '%instagram%'  
+        where perma_link like '%instagram%' and (perma_link like '%/reel/%' or perma_link like '%/p/%')  
         and customer_profile_id = cast(
             (select distinct ssd.customer_profile_id  
             FROM `bi-lenus-prod.dbt_datamart.sprout_social_daily` ssd 
@@ -103,7 +103,7 @@ def coach_ig_info(handle_name = "monetzamora_"):
     from IG_info 
     left join coach_handle
     on cast(IG_info.customer_profile_id as string) = cast(coach_handle.customer_profile_id as string)
-    order by _date asc
+    order by _date desc
     """
     # Run the query
     query_job = client.query(query)
