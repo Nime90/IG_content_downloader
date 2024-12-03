@@ -1,7 +1,7 @@
 import streamlit as st
 from utils.download_content import download_content_gc as download_content
 from utils.coach_ig_info import coach_ig_info_gc as coach_ig_info
-from utils.mp4_to_jpg import mp4_to_jpg
+from utils.mp4_to_jpg import mp4_to_jpg_gc as mp4_to_jpg
 import zipfile
 import os,shutil
 
