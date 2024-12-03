@@ -7,7 +7,7 @@ import os, shutil, base64
 #clean results
 if os.path.exists('/content/results'): shutil.rmtree('/content/results')
 #specify the video url
-coach_url = 'https://www.instagram.com/monetzamora_/?hl=en'
+coach_url = 'https://www.instagram.com/emmafituk_/?hl=en'
 posts_info = coach_ig_info(coach_url.split('/')[-2])
 
 url_list=[l for l in posts_info.perma_link]
