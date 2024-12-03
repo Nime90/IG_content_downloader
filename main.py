@@ -1,5 +1,6 @@
 from utils.download_content import download_content
 from utils.coach_ig_info import coach_ig_info
+from utils.mp4_to_jpg import mp4_to_jpg
 import os, shutil
 
 #clean results
@@ -16,7 +17,12 @@ print(url_list)
 captions = []
 additional_info_lists = []
 for i,url in enumerate(url_list):
+    #get the name of the downloaded files
     file_names = download_content(url)
+    #if i download a video i will split it into frames
+    if 'mp4' in file_names[0]:
+      mp4_to_jpg(file_names[0])
+      os.remove('/content/results/'+str(file_names[0]))
     captions.append(posts_info.text[i])
     additional_info_lists.append(
       'video_views: '+str(posts_info.lifetime_video_views[i])+

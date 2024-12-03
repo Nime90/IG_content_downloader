@@ -1,7 +1,6 @@
 from utils.download_content import download_content_gc as download_content
 from utils.coach_ig_info import coach_ig_info_gc as coach_ig_info
 from utils.mp4_to_jpg import mp4_to_jpg
-
 import os, shutil
 
 #clean results
@@ -11,7 +10,7 @@ coach_url = 'https://www.instagram.com/monetzamora_/?hl=en'
 posts_info = coach_ig_info(coach_url.split('/')[-2])
 
 url_list=[l for l in posts_info.perma_link]
-url_list = url_list[:1]
+url_list = url_list[:3]
 print('urls captured')
 print(url_list)
 #download in results folder
