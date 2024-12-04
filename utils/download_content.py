@@ -3,6 +3,11 @@ def download_content_gc(video_url,coach_handel):
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.common.by import By
     import time, os,requests, shutil
+    from utils.upload_in_bucket import upload_in_bucket
+    from datetime import datetime
+
+    # Get the current date
+    current_date = datetime.now().date()
 
     #create results folder if does not exists
     content_name = video_url.split('/')[-2]
@@ -25,7 +30,7 @@ def download_content_gc(video_url,coach_handel):
     driver.get('https://fastdl.app/en')
     driver.implicitly_wait(2) 
 
-    while True:
+    for _ in range(10):
         try:
             input_element=driver.find_element(By.CSS_SELECTOR,'input')
             driver.implicitly_wait(3)
@@ -40,15 +45,15 @@ def download_content_gc(video_url,coach_handel):
             time.sleep(2)
             break
         except:
-            time.sleep(0.5)
+            time.sleep(1.5)
             pass
 
-    while True:
+    for _ in range(10):
         try:
             buttons = driver.find_elements(By.CSS_SELECTOR, "a.button.button--filled.button__download")
             button_list=[]
             for button in buttons:
-                driver.implicitly_wait(5) 
+                driver.implicitly_wait(3) 
                 button_list.append(button.get_attribute('href'))
             for i,url in enumerate(button_list):
                 if '.mp4' in url: extension='.mp4'
@@ -61,12 +66,17 @@ def download_content_gc(video_url,coach_handel):
             if Last_created_file in [f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]:
                 break
         except:
-            time.sleep(0.5)
+            time.sleep(1.5)
             pass
 
 
     driver.quit()
     files = [res_folder+'/'+f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]
+    for f in files:
+        dest_name=f.split('/')[-1]
+        upload_in_bucket(bucket_name='bi-lenus-temp-north1'
+                    , source_file_name = f
+                    , destination_blob_name = 'Some_content/'+str(current_date)+'/'+coach_handel+'/'+str(content_name)+'/'+dest_name)
     return files
 
 
@@ -75,6 +85,11 @@ def download_content(video_url,coach_handel):
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.common.by import By
     import time, os,requests, shutil
+    from utils.upload_in_bucket import upload_in_bucket
+    from datetime import datetime
+
+    # Get the current date
+    current_date = datetime.now().date()
 
     #create results folder if does not exists
     content_name = video_url.split('/')[-2]
@@ -91,7 +106,7 @@ def download_content(video_url,coach_handel):
     driver.get('https://fastdl.app/en')
     driver.implicitly_wait(2) 
     
-    while True:
+    for _ in range(10):
         try:
             input_element=driver.find_element(By.CSS_SELECTOR,'input')
             driver.implicitly_wait(3)
@@ -106,15 +121,15 @@ def download_content(video_url,coach_handel):
             time.sleep(2)
             break
         except:
-            time.sleep(0.5)
+            time.sleep(1.5)
             pass
 
-    while True:
+    for _ in range(10):
         try:
             buttons = driver.find_elements(By.CSS_SELECTOR, "a.button.button--filled.button__download")
             button_list=[]
             for button in buttons:
-                driver.implicitly_wait(5) 
+                driver.implicitly_wait(3) 
                 button_list.append(button.get_attribute('href'))
             for i,url in enumerate(button_list):
                 if '.mp4' in url: extension='.mp4'
@@ -127,10 +142,15 @@ def download_content(video_url,coach_handel):
             if Last_created_file in [f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]:
                 break
         except:
-            time.sleep(0.5)
+            time.sleep(1.5)
             pass
 
 
     driver.quit()
     files = [res_folder+'/'+f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]
+    for f in files:
+        dest_name=f.split('/')[-1]
+        upload_in_bucket(bucket_name='bi-lenus-temp-north1'
+                    , source_file_name = f
+                    , destination_blob_name = 'Some_content/'+str(current_date)+'/'+coach_handel+'/'+str(content_name)+'/'+dest_name)
     return files

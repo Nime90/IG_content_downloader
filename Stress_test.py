@@ -13,6 +13,7 @@ else:
    from utils.coach_ig_info import coach_ig_info_gc as coach_ig_info
 from utils.coach_ig_info import coach_handles_all
 from datetime import datetime
+import os, shutil
 
 # Get the current date
 current_date = datetime.now().date()
@@ -21,7 +22,8 @@ current_date = datetime.now().date()
 
 #specify the video url
 coach_handles_all_l=coach_handles_all()
-coach_urls = ['https://www.instagram.com/'+str(h)+'/?hl=en' for h in coach_handles_all_l.handle]
+coach_imported=['delilahrawfit','emmafituk_','fitbywh','jamiemiichele','jynfits','oj__fit','ownit.sweden','stephby._',]
+coach_urls = ['https://www.instagram.com/'+str(h)+'/?hl=en' for h in coach_handles_all_l.handle if h not in coach_imported]
 
 for coach_url in coach_urls:
   posts_info = coach_ig_info(coach_url.split('/')[-2])
@@ -36,10 +38,11 @@ for coach_url in coach_urls:
     if 'instagram' in str(url):
       #get the name of the downloaded files
       try:
-        file_names = download_content(url, coach_handel)
+         file_names = download_content(url, coach_handel)
       except:
         print(url,'did not work')
-        
+  #clear results for the coach
+  if os.path.exists('results/'+str(coach_handel)): shutil.rmtree('results/'+str(coach_handel))
         
       
 
