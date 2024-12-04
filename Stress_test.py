@@ -22,7 +22,9 @@ current_date = datetime.now().date()
 
 #specify the video url
 coach_handles_all_l=coach_handles_all()
-coach_imported=['delilahrawfit','emmafituk_','fitbywh','jamiemiichele','jynfits','oj__fit','ownit.sweden','stephby._',]
+coach_imported=['brookehackett_fitspo','delilahrawfit','emmafituk_','fitbywh','jamiemiichele','joexfitness','jynfits','kennedybonham_',
+                'nicolunaa','oj__fit','ownit.sweden','powerbylisa','stephby._',]
+
 coach_urls = ['https://www.instagram.com/'+str(h)+'/?hl=en' for h in coach_handles_all_l.handle if h not in coach_imported]
 
 for coach_url in coach_urls:
