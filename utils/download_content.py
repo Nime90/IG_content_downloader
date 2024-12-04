@@ -1,12 +1,13 @@
-def download_content_gc(video_url):
+def download_content_gc(video_url,coach_handel):
     import google_colab_selenium as gs
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.common.by import By
-    import time, os,requests
-    from bs4 import BeautifulSoup
+    import time, os,requests, shutil
+
     #create results folder if does not exists
-    res_folder='/content/results'
-    #if os.path.exists(res_folder): shutil.rmtree(res_folder)
+    content_name = video_url.split('/')[-2]
+    res_folder=os.getcwd()+'/results/'+str(coach_handel)+'/'+str(content_name)
+    if os.path.exists(res_folder) and os.path.isdir(res_folder): shutil.rmtree(res_folder)
     os.makedirs(res_folder, exist_ok=True)
 
     #video_url= 'https://www.instagram.com/p/DChnh9yxQ0q/?hl=en&img_index=1'#'https://www.instagram.com/p/DC11wzFsGul/?hl=en'
