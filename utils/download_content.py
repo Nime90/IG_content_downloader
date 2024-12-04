@@ -22,21 +22,21 @@ def download_content_gc(video_url):
 
     driver = gs.Chrome(options=chrome_options)
     driver.get('https://fastdl.app/en')
-    driver.implicitly_wait(10) 
+    driver.implicitly_wait(2) 
 
     while True:
         try:
             input_element=driver.find_element(By.CSS_SELECTOR,'input')
-            driver.implicitly_wait(10)
+            driver.implicitly_wait(3)
             input_element.click()
 
-            driver.implicitly_wait(10) 
+            driver.implicitly_wait(3) 
             input_element.send_keys(video_url)
-            driver.implicitly_wait(10) 
+            driver.implicitly_wait(3) 
             button = driver.find_element(By.CSS_SELECTOR, 'button.search-form__button[type="submit"]')
             button.click()
-            driver.implicitly_wait(10)
-            time.sleep(3)
+            driver.implicitly_wait(3)
+            time.sleep(2)
             break
         except:
             time.sleep(0.5)
@@ -53,45 +53,32 @@ def download_content_gc(video_url):
                 if '.mp4' in url: extension='.mp4'
                 else: extension='.jpg'
                 r = requests.get(url)
-                results_directory=res_folder+'/'+video_url.split('/')[-2]+'_'+str(i)+extension
+                results_directory=res_folder+'/'+str(content_name)+'_'+str(i)+extension
                 with open(results_directory, 'wb') as f:
                     f.write(r.content)
-            Last_created_file=str(video_url.split('/')[-2]+'_'+str(i)+extension)
+            Last_created_file=str(content_name)+'_'+str(i)+extension
             if Last_created_file in [f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]:
                 break
         except:
             time.sleep(0.5)
             pass
 
-    #capturing additional_info
-    #while True:
-    #    try:
-    #        additional_info=driver.find_elements(By.CLASS_NAME, "output-list__info")
-    #        additional_info_list = additional_info[0].text.split('\n')
-    #        if len(additional_info_list)>0:
-    #            break
-    #    except:
-    #        time.sleep(0.5)
-    #        pass
-    #get caption
-    #caption = BeautifulSoup(requests.get(video_url).text, 'html.parser').find_all('meta', property="og:description")[0]['content']
 
     driver.quit()
-    files = [f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]
+    files = [res_folder+'/'+f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]
+    return files
 
-    return files#, caption, additional_info_list
 
-
-def download_content(video_url):
+def download_content(video_url,coach_handel):
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.common.by import By
-    import time, os,requests
-    from bs4 import BeautifulSoup
-
+    import time, os,requests, shutil
 
     #create results folder if does not exists
-    res_folder=os.getcwd()+'/results'
+    content_name = video_url.split('/')[-2]
+    res_folder=os.getcwd()+'/results/'+str(coach_handel)+'/'+str(content_name)
+    if os.path.exists(res_folder) and os.path.isdir(res_folder): shutil.rmtree(res_folder)
     os.makedirs(res_folder, exist_ok=True)
     #initiate webdriver
     chrome_options = Options()
@@ -101,21 +88,21 @@ def download_content(video_url):
 
     driver = webdriver.Chrome(options=chrome_options)
     driver.get('https://fastdl.app/en')
-    driver.implicitly_wait(10) 
+    driver.implicitly_wait(2) 
     
     while True:
         try:
             input_element=driver.find_element(By.CSS_SELECTOR,'input')
-            driver.implicitly_wait(10)
+            driver.implicitly_wait(3)
             input_element.click()
 
-            driver.implicitly_wait(10) 
+            driver.implicitly_wait(3) 
             input_element.send_keys(video_url)
-            driver.implicitly_wait(10) 
+            driver.implicitly_wait(3) 
             button = driver.find_element(By.CSS_SELECTOR, 'button.search-form__button[type="submit"]')
             button.click()
-            driver.implicitly_wait(10)
-            time.sleep(3)
+            driver.implicitly_wait(3)
+            time.sleep(2)
             break
         except:
             time.sleep(0.5)
@@ -132,29 +119,17 @@ def download_content(video_url):
                 if '.mp4' in url: extension='.mp4'
                 else: extension='.jpg'
                 r = requests.get(url)
-                results_directory=res_folder+'/'+video_url.split('/')[-2]+'_'+str(i)+extension
+                results_directory=res_folder+'/'+str(content_name)+'_'+str(i)+extension
                 with open(results_directory, 'wb') as f:
                     f.write(r.content)
-            Last_created_file=str(video_url.split('/')[-2]+'_'+str(i)+extension)
-            if Last_created_file in [f for f in os.listdir('results') if os.path.isfile(os.path.join('results', f))]:
+            Last_created_file=str(content_name)+'_'+str(i)+extension
+            if Last_created_file in [f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]:
                 break
         except:
             time.sleep(0.5)
             pass
 
-    #capturing additional_info
-    #while True:
-    #    try:
-    #        additional_info=driver.find_elements(By.CLASS_NAME, "output-list__info")
-    #        additional_info_list = additional_info[0].text.split('\n')
-    #        if len(additional_info_list)>0:
-    #            break
-    #    except:
-    #        time.sleep(0.5)
-    #        pass
-    #get caption
-    #caption = BeautifulSoup(requests.get(video_url).text, 'html.parser').find_all('meta', property="og:description")[0]['content']
 
     driver.quit()
-    files = [f for f in os.listdir('results') if os.path.isfile(os.path.join('results', f))]
-    return files#, caption, additional_info_list
+    files = [res_folder+'/'+f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]
+    return files
