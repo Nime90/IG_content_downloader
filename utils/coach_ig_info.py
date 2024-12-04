@@ -111,3 +111,27 @@ def coach_ig_info(handle_name = "monetzamora_"):
     # Fetch the results
     df = query_job.to_dataframe()
     return df
+
+def coach_handles_all():
+    try:
+        from google.colab import auth
+        auth.authenticate_user()
+    except: pass
+
+    from google.cloud import bigquery
+    import pandas as pd
+
+    # Initialize a client with the specified project ID
+    client = bigquery.Client(project="lenus-ehealth", location="europe-north1" )
+  # Construct the query
+    query = """
+        SELECT distinct 
+        handle
+        FROM `bi-lenus-prod.dbt_datamart.sprout_social_daily` 
+   """
+    # Run the query
+    query_job = client.query(query)
+
+    # Fetch the results
+    df = query_job.to_dataframe()
+    return df

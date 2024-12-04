@@ -11,7 +11,7 @@ if colab==0:
 else: 
    from utils.download_content import download_content_gc as download_content
    from utils.coach_ig_info import coach_ig_info_gc as coach_ig_info
-
+from utils.coach_ig_info import coach_handles_all
 from utils.mp4_to_jpg import mp4_to_jpg
 from utils.img_interpreter import img_interpreter
 import os, shutil,base64
@@ -23,9 +23,8 @@ current_date = datetime.now().date()
 #clean results
 
 #specify the video url
-coach_urls = ['https://www.instagram.com/emmafituk_/?hl=en',
-              'https://www.instagram.com/fitwithyvannia/?hl=en',
-              'https://www.instagram.com/jamiemiichele/?hl=en']
+coach_handles_all_l=coach_handles_all()
+coach_urls = ['https://www.instagram.com/'+str(h)+'/?hl=en' for h in coach_handles_all_l.handle]
 
 for coach_url in coach_urls:
   posts_info = coach_ig_info(coach_url.split('/')[-2])
