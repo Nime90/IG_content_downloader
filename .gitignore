@@ -2,3 +2,7 @@
 *.jpg
 /results/
 .env
+*/__pycache__
+*.pyc
+*.venv
+/backup/
