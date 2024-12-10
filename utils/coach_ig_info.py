@@ -98,11 +98,14 @@ def coach_ig_info(handle_name = "monetzamora_"):
         lifetime_likes,
         lifetime_shares_count,
         lifetime_comments_count,
-        perma_link,
+        IG_info.perma_link,
+        Source.source,
         text
     from IG_info 
     left join coach_handle
     on cast(IG_info.customer_profile_id as string) = cast(coach_handle.customer_profile_id as string)
+    left join  (SELECT distinct perma_link, source FROM `bi-lenus-prod.dbt_datamart.sprout_social_posts`  where handle = '{handle_name}' ) as Source
+    on Source.perma_link = IG_info.perma_link
     order by _date desc
     """
     # Run the query
