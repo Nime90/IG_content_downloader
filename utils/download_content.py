@@ -106,7 +106,7 @@ def download_content(video_url,coach_handel):
     driver.get('https://fastdl.app/en')
     driver.implicitly_wait(2) 
     
-    for _ in range(10):
+    for _ in range(50):
         try:
             input_element=driver.find_element(By.CSS_SELECTOR,'input')
             driver.implicitly_wait(3)
@@ -124,7 +124,7 @@ def download_content(video_url,coach_handel):
             time.sleep(1.5)
             pass
 
-    for _ in range(10):
+    for _ in range(50):
         try:
             buttons = driver.find_elements(By.CSS_SELECTOR, "a.button.button--filled.button__download")
             button_list=[]
@@ -149,8 +149,10 @@ def download_content(video_url,coach_handel):
     driver.quit()
     files = [res_folder+'/'+f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]
     for f in files:
-        dest_name=f.split('/')[-1]
-        upload_in_bucket(bucket_name='bi-lenus-temp-north1'
-                    , source_file_name = f
-                    , destination_blob_name = 'Some_content/'+str(current_date)+'/'+coach_handel+'/'+str(content_name)+'/'+dest_name)
+        try:
+            dest_name=f.split('/')[-1]
+            upload_in_bucket(bucket_name='bi-lenus-temp-north1'
+                        , source_file_name = f
+                        , destination_blob_name = 'Some_content/'+str(current_date)+'/'+coach_handel+'/'+str(content_name)+'/'+dest_name)
+        except: pass
     return files
