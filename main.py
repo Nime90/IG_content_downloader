@@ -29,7 +29,7 @@ current_date = datetime.now().date()
 if os.path.exists('results'): shutil.rmtree('results')
 
 #collect all needed handle
-markets = ["Sweden","USA","Norway","UK","Denmark","Spain","NL","Germany","Finland","Canada"]+#["Sweden","USA","Norway"]+
+markets = ["Sweden","USA","Norway","UK","Denmark","Spain","NL","Germany","Finland","Canada"]#+["Sweden","USA","Norway"]+
 for market in markets:
   #prepare overall summary Table
   Coaches_overall_summary = pd.DataFrame()
