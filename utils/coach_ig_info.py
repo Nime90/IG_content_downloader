@@ -135,7 +135,7 @@ def coach_handles_all(market='Denmark'):
         SELECT distinct 
         handle
         FROM `bi-lenus-prod.dbt_datamart.sprout_social_daily` 
-        --where kam_country = '{market}'
+        where kam_country = '{market}'
         """
     # Run the query
     query_job = client.query(query)
