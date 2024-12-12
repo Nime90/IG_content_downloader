@@ -72,11 +72,14 @@ def download_content_gc(video_url,coach_handel):
 
     driver.quit()
     files = [res_folder+'/'+f for f in os.listdir(res_folder) if os.path.isfile(os.path.join(res_folder, f))]
-    for f in files:
+    try:
+      for f in files:
         dest_name=f.split('/')[-1]
         upload_in_bucket(bucket_name='bi-lenus-temp-north1'
                     , source_file_name = f
                     , destination_blob_name = 'Some_content/'+str(current_date)+'/'+coach_handel+'/'+str(content_name)+'/'+dest_name)
+    except: pass
+    
     return files
 
 

@@ -11,45 +11,48 @@ def coach_ig_info_gc(handle_name = "monetzamora_"):
 
   # Construct the query
   query = f"""
-  with coach_handle as (
-      SELECT distinct 
-      customer_profile_id, 
-      handle
-      FROM `bi-lenus-prod.dbt_datamart.sprout_social_daily` 
-  ),
-  IG_info as (
-      SELECT _date,
-      customer_profile_id,
-      metrics.lifetime_video_views,
-      metrics.lifetime_reactions,
-      metrics.lifetime_likes,
-      metrics.lifetime_shares_count,
-      metrics.lifetime_comments_count,
-      perma_link,
-      text
-      FROM `bi-lenus-prod.sprout_social.posts` 
-      where perma_link like '%instagram%' and (perma_link like '%/reel/%' or perma_link like '%/p/%')  
-      and customer_profile_id = cast(
-          (select distinct ssd.customer_profile_id  
-          FROM `bi-lenus-prod.dbt_datamart.sprout_social_daily` ssd 
-          where ssd.handle = '{handle_name}' 
-          ) as string
-      )
-  )
-  select 
-      _date,
-      handle,
-      lifetime_video_views,
-      lifetime_reactions,
-      lifetime_likes,
-      lifetime_shares_count,
-      lifetime_comments_count,
-      perma_link,
-      text
-  from IG_info 
-  left join coach_handle
-  on cast(IG_info.customer_profile_id as string) = cast(coach_handle.customer_profile_id as string)
-  order by _date desc
+    with coach_handle as (
+        SELECT distinct 
+        customer_profile_id, 
+        handle
+        FROM `bi-lenus-prod.dbt_datamart.sprout_social_daily` 
+    ),
+    IG_info as (
+        SELECT _date,
+        customer_profile_id,
+        metrics.lifetime_video_views,
+        metrics.lifetime_reactions,
+        metrics.lifetime_likes,
+        metrics.lifetime_shares_count,
+        metrics.lifetime_comments_count,
+        perma_link,
+        text
+        FROM `bi-lenus-prod.sprout_social.posts` 
+        where perma_link like '%instagram%' and (perma_link like '%/reel/%' or perma_link like '%/p/%')  
+        and customer_profile_id = cast(
+            (select distinct ssd.customer_profile_id  
+            FROM `bi-lenus-prod.dbt_datamart.sprout_social_daily` ssd 
+            where ssd.handle = '{handle_name}' 
+            ) as string
+        )
+    )
+    select 
+        _date,
+        handle,
+        lifetime_video_views,
+        lifetime_reactions,
+        lifetime_likes,
+        lifetime_shares_count,
+        lifetime_comments_count,
+        IG_info.perma_link,
+        Source.source,
+        text
+    from IG_info 
+    left join coach_handle
+    on cast(IG_info.customer_profile_id as string) = cast(coach_handle.customer_profile_id as string)
+    left join  (SELECT distinct perma_link, source FROM `bi-lenus-prod.dbt_datamart.sprout_social_posts`  where handle = '{handle_name}' ) as Source
+    on Source.perma_link = IG_info.perma_link
+    order by _date desc
   """
 
   # Execute the query and convert the results to a pandas DataFrame
@@ -132,7 +135,7 @@ def coach_handles_all(market='Denmark'):
         SELECT distinct 
         handle
         FROM `bi-lenus-prod.dbt_datamart.sprout_social_daily` 
-        where kam_country = '{market}'
+        --where kam_country = '{market}'
         """
     # Run the query
     query_job = client.query(query)
