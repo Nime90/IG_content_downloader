@@ -25,15 +25,14 @@ model = "gpt-4o"
 # Get the current date
 current_date = datetime.now().date()
 
-#prepare overall summary Table
-Coaches_overall_summary = pd.DataFrame()
-
 #clean past results
 if os.path.exists('results'): shutil.rmtree('results')
 
 #collect all needed handle
-markets = ["Sweden","USA","Norway","Canada","UK","Denmark","Spain","NL","Germany","Finland"]
+markets = ["Sweden","USA","Norway","UK","Denmark","Spain","NL","Germany","Finland","Canada"]+#["Sweden","USA","Norway"]+
 for market in markets:
+  #prepare overall summary Table
+  Coaches_overall_summary = pd.DataFrame()
   coach_handles_all_l=coach_handles_all(market=market)
   #specify the video url
   coach_urls = coach_urls = ['https://www.instagram.com/'+str(h)+'/?hl=en' for h in coach_handles_all_l.handle] #['https://www.instagram.com/emmafituk_/?hl=en', 'https://www.instagram.com/fitwithyvannia/?hl=en','https://www.instagram.com/jamiemiichele/?hl=en']
