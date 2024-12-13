@@ -78,14 +78,20 @@ for market in markets:
         #initiate cost computation
         Total_cost=0.0
         for y,ip in enumerate(images):
-          image_path=directory+'/'+ip
-          with open(image_path, "rb") as image_file: base64_string = base64.b64encode(image_file.read()).decode('utf-8')
-          img_description,cost_img = img_interpreter(base64_string, model=model)
-          print(f"Total estimated cost for img description: ${cost_img:.4f}")
-          Total_cost = Total_cost + float(cost_img)
-          images_description = images_description + 'Image_'+str(y)+ ':' +img_description+'\n\n'
-          #delete the image
-          os.remove(image_path)
+          try:
+            image_path=directory+'/'+ip
+            with open(image_path, "rb") as image_file: base64_string = base64.b64encode(image_file.read()).decode('utf-8')
+            img_description,cost_img = img_interpreter(base64_string, model=model)
+            print(f"Total estimated cost for img description: ${cost_img:.4f}")
+            Total_cost = Total_cost + float(cost_img)
+            images_description = images_description + 'Image_'+str(y)+ ':' +img_description+'\n\n'
+            #delete the image
+            os.remove(image_path)
+          except: 
+            images_description = images_description + 'Image_'+str(y)+ ':is corrupted\n\n'
+            #delete the image
+            os.remove(image_path)
+
       
       else:
         images_description = 'No SOME content downloaded on this coach.'
