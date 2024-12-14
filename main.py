@@ -17,6 +17,7 @@ from utils.coach_ig_info import coach_handles_all
 from utils.mp4_to_jpg import mp4_to_jpg
 from utils.img_interpreter import img_interpreter
 import os, shutil,base64, json, pandas as pd
+from utils.upload_in_bucket import upload_in_bucket
 from datetime import datetime
 
 #select the openaimodel to use
@@ -165,5 +166,14 @@ for market in markets:
   Coaches_overall_summary = pd.merge(Coaches_overall_summary,tab, left_on='CTA name',right_on='Title_recommended', how='left')
 
   #Saving overall results
-  if colab == 0: Coaches_overall_summary.to_excel('results/Coaches_overall_summary_'+str(market[:2].upper())+'.xlsx',index=False)
-  else: Coaches_overall_summary.to_excel('/content/results/Coaches_overall_summary'+str(market[:2].upper())+'.xlsx',index=False)
+  if colab == 0: 
+    res_dir = 'results/Coaches_overall_summary_'+str(market[:2].upper())+'.xlsx'
+    Coaches_overall_summary.to_excel(res_dir,index=False)
+  else:
+    res_dir = '/content/results/Coaches_overall_summary'+str(market[:2].upper())+'.xlsx'
+    Coaches_overall_summary.to_excel(res_dir,index=False)
+
+  #Save results in bucklet
+  upload_in_bucket(bucket_name='bi-lenus-temp-north1'
+                          , source_file_name = res_dir
+                          , destination_blob_name = 'Some_content/'+str(current_date)+'/'+str(market)+'/'+'Coaches_overall_summary'+str(market[:2].upper())+'.xlsx')
